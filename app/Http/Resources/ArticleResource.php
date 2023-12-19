@@ -23,7 +23,8 @@ class ArticleResource extends JsonResource
             "user_id"=>$this->user_id,
             'author'=> new UserResource($this->whenLoaded('author')),
             'categories' => CategoryResource::collection($this->whenLoaded('categories')),
-            'published_at'=> Carbon::parse($this->created_at)->format('d-m-y')
-        ];;
+            'published_at'=> Carbon::parse($this->created_at)->format('d-m-y'),
+			'status' => $this->status
+        ];
     }
 }

@@ -45,9 +45,20 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $slug)
     {
-        //
+        try{
+            $category = Category::with(['articles'])->where(['slug' => $slug])->first();
+            if($category){
+                return response()->successResponse(new CategoryResource($category), 'Category details', 200);
+            }else{
+                return response()->notFoundResponse();
+            }
+
+        }catch(Exception $exception){
+            Log::info($exception->getMessage());
+            return response()->errorResponse();
+        }
     }
 
     /**

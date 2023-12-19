@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Admin\UserController;
 use App\Http\Controllers\Api\ArticleController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CategoryController;
@@ -23,13 +24,17 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => 'api'], function () {
     Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/register', [AuthController::class, 'register']);
 });
 
 
 Route::group(['middleware' => 'jwt.verify'], function () {
+    Route::get('users', [UserController::class, 'index']);
+    Route::get('user', [UserController::class, 'show']);
+
     Route::get('categories/{slug}', [CategoryController::class, 'show']);
     Route::apiResource('categories', CategoryController::class);
-    
+
     Route::get('articles/{slug}', [ArticleController::class, 'show']);
     Route::apiResource('articles', ArticleController::class);
 });
