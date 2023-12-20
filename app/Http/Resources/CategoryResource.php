@@ -21,7 +21,6 @@ class CategoryResource extends JsonResource
             "slug"=> $this->slug,
             'articles' => ArticleResource::collection($this->whenLoaded('articles')),
             'created_at'=> Carbon::parse($this->created_at)->format('d-m-y'),
-			'status' => $this->status
         ];
     }
 }

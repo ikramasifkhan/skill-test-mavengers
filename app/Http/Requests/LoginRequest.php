@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
-class AuthRequest extends FormRequest
+class LoginRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,5 +26,10 @@ class AuthRequest extends FormRequest
             'email' => 'required|email',
             'password' => 'required|string|min:8',
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        response()->sendValidationErrorResponse($validator->errors());
     }
 }

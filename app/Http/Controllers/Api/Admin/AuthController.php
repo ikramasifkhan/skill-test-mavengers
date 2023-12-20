@@ -1,16 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\AuthRequest;
+use App\Http\Requests\LoginRequest;
 use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Exception;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Validator as FacadesValidator;
 
 class AuthController extends Controller
 {
@@ -24,11 +22,11 @@ class AuthController extends Controller
     }
 
 
-    public function login(AuthRequest $request)
+    public function login(LoginRequest $request)
     {
         try{
             if (! $token = auth()->attempt($request->validated())) {
-                return response()->errorResponse('Unauthenticated', 401);
+                return response()->errorResponse('Invalid email or password', 401);
             }
             $data = [
                 'access_token' => $token,
@@ -55,6 +53,16 @@ class AuthController extends Controller
             return response()->errorResponse();
         }
 
+    }
+
+    public function logout(){
+        try{
+            auth()->logout();
+            return response()->successResponse([], 'Logout successful', 200);
+        }catch(Exception $exception){
+            Log::info($exception->getMessage());
+            return response()->errorResponse();
+        }
     }
 
 }
